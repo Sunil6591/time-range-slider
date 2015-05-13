@@ -168,9 +168,27 @@
 					this.range.addEventListener('mousedown', this.slideListener);
 					this.leftHandle.addEventListener('mousedown', this.slideListener);
 					this.rightHandle.addEventListener('mousedown', this.slideListener);
+                    var config = {
+                        attributes: true // this is to watch for attribute changes.
+                    };
+                    // passing the start and end inputs only
+                    this.observer.observe(this.startInput, config);
+                    this.observer.observe(this.endInput, config);
 				}
 			},
-
+            observer : {
+                get: function() {
+                    return new MutationObserver(function(mutations) {
+                        var timeRangeSlider = this;
+                        mutations.forEach(function(mutation) {
+                            // Watching only on attributes and if the changed attribute is 'value'
+                            if (mutation.type === "attributes" && mutation.attributeName === "value") {
+                                timeRangeSlider.setStyle();
+                            }
+                        });
+                    }.bind(this));
+                }
+            },
 			attributeChangedCallback: {
 				value: function(attrName, oldVal, newVal) {
 					switch (attrName) {
@@ -317,11 +335,23 @@
 			},
 
 			startValue: {
-				get: function() { return this.parseTime(this.startInput.value); }
+				get: function() {
+                    var _startValue = this.parseTime(this.startInput.value);
+                    if (_startValue < this.minValue)
+                        return this.minValue;
+                    else
+                        return _startValue;
+                }
 			},
 
 			endValue: {
-				get: function() { return this.parseTime(this.endInput.value); }
+				get: function() {
+                    var _endvalue = this.parseTime(this.endInput.value)
+                    if (_endvalue > this.maxValue)
+                        return this.maxValue;
+                    else
+                        return _endvalue;
+                }
 			},
 
 			inputs: {
