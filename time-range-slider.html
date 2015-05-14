@@ -176,14 +176,16 @@
                     this.observer.observe(this.endInput, config);
 				}
 			},
-            observer : {
+            observer: {
                 get: function() {
                     return new MutationObserver(function(mutations) {
                         var timeRangeSlider = this;
                         mutations.forEach(function(mutation) {
-                            // Watching only on attributes and if the changed attribute is 'value'
-                            if (mutation.type === "attributes" && mutation.attributeName === "value") {
-                                timeRangeSlider.setStyle();
+                            // Watching only for input(start,end) and its attribute is 'value'
+                            if (mutation.target.nodeName === "INPUT" &&
+                                    (mutation.target.name === "start" || mutation.target.name === "end") &&
+                                    mutation.attributeName === "value") {
+                                timeRangeSlider.setPositioning();
                             }
                         });
                     }.bind(this));

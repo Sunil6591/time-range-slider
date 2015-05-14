@@ -10,10 +10,12 @@
         var startInput = document.querySelector('input[name=start]');
         var endInput = document.querySelector('input[name=end]');
         if (startInput) {
-            startInput.setAttribute('value','8:30');
-            endInput.setAttribute('value','15:30');
+            startInput.setAttribute('value', '8:30');
         }
-    },3000);
+        if (endInput) {
+            endInput.setAttribute('value', '15:30');
+        }
+    }, 3000);
 
 </script>
 <form method="GET" style="width: 60%; margin-left: auto; margin-right: auto">
