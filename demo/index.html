@@ -7,6 +7,18 @@
 <link rel="import" href="../time-range-slider.html">
 <script>
     setTimeout(function() {
+        var timeRangeRuler = document.querySelector('time-range-ruler');
+        var timeRangeSlider = document.querySelector('time-range-slider');
+        if (timeRangeRuler) {
+            timeRangeRuler.setAttribute('min', '7:30');
+            timeRangeRuler.setAttribute('max', '16:30');
+        }
+        if (timeRangeSlider) {
+            timeRangeSlider.setAttribute('min', '7:30');
+            timeRangeSlider.setAttribute('max', '16:30');
+        }
+    }, 3000);
+    setTimeout(function() {
         var startInput = document.querySelector('input[name=start]');
         var endInput = document.querySelector('input[name=end]');
         if (startInput) {
@@ -15,7 +27,7 @@
         if (endInput) {
             endInput.setAttribute('value', '15:30');
         }
-    }, 3000);
+    }, 6000);
 
 </script>
 <form method="GET" style="width: 60%; margin-left: auto; margin-right: auto">

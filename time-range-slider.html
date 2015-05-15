@@ -92,28 +92,47 @@
 				value: function() {
 					this._shadowRoot = this.createShadowRoot();
 					this._shadowRoot.appendChild(document.importNode(rulerTemplate.content, true));
-					for (var h = this.firstHour; h <= this.lastHour; h ++) {
-						var el = document.createElement('div');
-						el.style.height = '.5em';
-						var subel = document.createElement('div');
-						subel.innerHTML = ('0' + h).slice(-2);
-						subel.style.width = '0';
-						subel.style.position = 'relative';
-						subel.style.top = '-1em';
-						subel.style.left = '-.5em';
-						subel.style.textAlign = 'center';
-						el.appendChild(subel);
-						this.rangeContainer.appendChild(el);
-						var self = this;
-						[.25, .5, .25].forEach(function(em) {
-							var el = document.createElement('div');
-							el.style.height = em + 'em';
-							self.rangeContainer.appendChild(el);
-						});
-					}
-					this.setStyle();
+                    this._drawRuler();
 				}
 			},
+            _drawRuler: {
+                value: function() {
+                    // Remove all children (if any)
+                    while (this.rangeContainer.firstChild) {
+                        this.rangeContainer.removeChild(this.rangeContainer.firstChild);
+                    }
+                    for (var h = this.firstHour; h <= this.lastHour; h ++) {
+                        var el = document.createElement('div');
+                        el.style.height = '.5em';
+                        var subel = document.createElement('div');
+                        subel.innerHTML = ('0' + h).slice(-2);
+                        subel.style.width = '0';
+                        subel.style.position = 'relative';
+                        subel.style.top = '-1em';
+                        subel.style.left = '-.5em';
+                        subel.style.textAlign = 'center';
+                        el.appendChild(subel);
+                        this.rangeContainer.appendChild(el);
+                        var self = this;
+                        [.25, .5, .25].forEach(function(em) {
+                            var el = document.createElement('div');
+                            el.style.height = em + 'em';
+                            self.rangeContainer.appendChild(el);
+                        });
+                    }
+                    this.setStyle();
+                }
+            },
+            attributeChangedCallback: {
+                value: function(attrName, oldVal, newVal) {
+                    switch (attrName) {
+                        case 'min':
+                        case 'max':
+                            this._drawRuler();
+                            break;
+                    }
+                }
+            },
 
 			// Properties
 
